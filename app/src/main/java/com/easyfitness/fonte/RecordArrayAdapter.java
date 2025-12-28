@@ -159,6 +159,8 @@ public class RecordArrayAdapter extends ArrayAdapter {
             viewHolder.FirstColValue.setText("-");
             viewHolder.SecondColValue.setText("-");
             viewHolder.ThirdColValue.setText("-");
+            viewHolder.Date.setText("--/--/--");
+            viewHolder.Time.setText("--:--");
         } else {
             if (exerciseType == ExerciseType.STRENGTH) {
                 viewHolder.FirstColValue.setText(String.valueOf(record.getSets()));

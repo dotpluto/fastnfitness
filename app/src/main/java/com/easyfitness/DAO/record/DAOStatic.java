@@ -223,7 +223,10 @@ public class DAOStatic extends DAORecord {
                 + " AND " + PROFILE_KEY + "=" + pProfile.getId()
                 + " AND " + TEMPLATE_RECORD_STATUS + "!=" + ProgramRecordStatus.PENDING.ordinal()
                 + " AND " + RECORD_TYPE + "!=" + RecordType.PROGRAM_TEMPLATE.ordinal();
-        mCursor.close();
+        //TODO this check is a hack for a deeper issue that might be worth looking into. Why did this function expect mCursor to be non null?
+        if(mCursor != null) {
+            mCursor.close();
+        }
         mCursor = db.rawQuery(selectQuery, new String[]{lDate});
 
         // looping through all rows and adding to list

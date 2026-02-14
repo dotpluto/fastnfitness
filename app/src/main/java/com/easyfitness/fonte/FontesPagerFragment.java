@@ -67,6 +67,7 @@ public class FontesPagerFragment extends Fragment {
                     .add(R.string.program, ProgramRunnerFragment.class, guidedWorkoutArgs)
                     .add(R.string.GraphLabel, FonteGraphFragment.class, args)
                     .add(R.string.HistoryLabel, FonteHistoryFragment.class, args)
+                    .add(R.string.LiveLabel, LiveFragment.class)
                     .create());
 
             mViewPager.setAdapter(pagerAdapter);

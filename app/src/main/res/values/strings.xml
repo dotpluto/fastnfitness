@@ -16,6 +16,7 @@
     <string name="DeleteLabel">Delete</string>
     <string name="ShareLabel">Share</string>
     <string name="EditLabel">Edit</string>
+    <string name="LiveLabel">Live</string>
     <string name="DeleteRecordDialog">Remove this record?</string>
 
     <!-- Fonte Fragment -->

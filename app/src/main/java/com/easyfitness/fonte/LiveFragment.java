@@ -48,6 +48,8 @@ public class LiveFragment extends Fragment {
         appViewModel.getProgramActiveInLiveView().observe(getViewLifecycleOwner(), (Program program) -> {
             if(program != null) {
                 showFragment(liveExercises);
+            } else {
+                showFragment(livePicker);
             }
         });
     }

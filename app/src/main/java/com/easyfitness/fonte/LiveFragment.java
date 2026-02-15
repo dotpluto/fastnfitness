@@ -44,18 +44,19 @@ public class LiveFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.setReorderingAllowed(true);
-        transaction.add(R.id.liveWorkoutContainer, LivePickerFragment.class, new Bundle());
-        transaction.commit();
+        showFragment(livePicker);
         appViewModel.getProgramActiveInLiveView().observe(getViewLifecycleOwner(), (Program program) -> {
             if(program != null) {
-                FragmentTransaction changeTransaction = getParentFragmentManager().beginTransaction();
-                changeTransaction.setReorderingAllowed(true);
-                changeTransaction.replace(R.id.liveWorkoutContainer, LiveExerciseFragment.class, new Bundle());
-                changeTransaction.commit();
+                showFragment(liveExercises);
             }
         });
+    }
+
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.setReorderingAllowed(true);
+        transaction.replace(R.id.liveWorkoutContainer, fragment);
+        transaction.commit();
     }
 
     @Override

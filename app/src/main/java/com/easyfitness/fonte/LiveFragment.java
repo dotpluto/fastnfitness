@@ -39,10 +39,11 @@ public class LiveFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        var view = inflater.inflate(R.layout.tab_live, container, false);
+        return inflater.inflate(R.layout.tab_live, container, false);
+    }
 
-
-
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.setReorderingAllowed(true);
         transaction.add(R.id.liveWorkoutContainer, LivePickerFragment.class, new Bundle());
@@ -55,8 +56,6 @@ public class LiveFragment extends Fragment {
                 changeTransaction.commit();
             }
         });
-
-        return view;
     }
 
     @Override

@@ -30,10 +30,10 @@
         app:layout_constraintVertical_bias="0.314" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/liveWorkoutPickerStartButton"
         android:layout_width="200dp"
         android:layout_height="53dp"
-        android:text="Start"
+        android:text="startText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

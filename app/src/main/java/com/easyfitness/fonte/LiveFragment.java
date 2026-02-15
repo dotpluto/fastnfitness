@@ -53,7 +53,7 @@ public class LiveFragment extends Fragment {
     }
 
     private void showFragment(Fragment fragment) {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.setReorderingAllowed(true);
         transaction.replace(R.id.liveWorkoutContainer, fragment);
         transaction.commit();

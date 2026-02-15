@@ -4,27 +4,23 @@ import android.content.Context;
 
 import com.easyfitness.DAO.program.DAOProgram;
 import com.easyfitness.DAO.record.DAORecord;
+import com.easyfitness.MyApplication;
 
 public class DatabaseAccess {
-
-    static private Context makeContextSafe(Context context) {
-        return context.getApplicationContext();
-    }
-
     static private DAORecord daoRecord;
     static private DAOProgram daoProgram;
 
-    static public DAORecord getRecordDAO(Context leakyContext) {
+    static public DAORecord getRecordDAO() {
 
         if(daoRecord == null) {
-            daoRecord = new DAORecord(makeContextSafe(leakyContext));
+            daoRecord = new DAORecord(MyApplication.getAppContext());
         }
         return daoRecord;
     }
 
     static public DAOProgram getProgramDAO(Context leakyContext) {
         if(daoProgram == null) {
-            daoProgram = new DAOProgram(makeContextSafe(leakyContext));
+            daoProgram = new DAOProgram(MyApplication.getAppContext());
         }
         return daoProgram;
     }

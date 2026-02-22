@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 import com.easyfitness.R;
 import com.easyfitness.enums.DisplayType;
+import com.easyfitness.fonte.liveworkout.LiveFragment;
 import com.easyfitness.programs.ProgramRunnerFragment;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;

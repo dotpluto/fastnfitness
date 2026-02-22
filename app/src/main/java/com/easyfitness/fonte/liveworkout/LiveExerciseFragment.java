@@ -1,4 +1,4 @@
-package com.easyfitness.fonte;
+package com.easyfitness.fonte.liveworkout;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.easyfitness.AppViMo;
 import com.easyfitness.DAO.record.Record;
-import com.easyfitness.Logger;
 import com.easyfitness.R;
 
 import java.util.List;

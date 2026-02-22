@@ -1,4 +1,4 @@
-package com.easyfitness.fonte;
+package com.easyfitness.fonte.liveworkout;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

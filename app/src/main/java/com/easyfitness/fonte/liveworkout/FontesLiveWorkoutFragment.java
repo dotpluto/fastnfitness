@@ -15,13 +15,13 @@ import com.easyfitness.AppViMo;
 import com.easyfitness.DAO.program.Program;
 import com.easyfitness.R;
 
-public class LiveFragment extends Fragment {
+public class FontesLiveWorkoutFragment extends Fragment {
     @Nullable Program selectedProgram;
 
     AppViMo appViewModel;
 
-    LivePickerFragment livePicker;
-    LiveExerciseFragment liveExercises;
+    FontesLiveWorkoutPickerFragment livePicker;
+    FontesLiveWorkoutExerciseFragment liveExercises;
 
     enum Screen {
         Picker,
@@ -32,7 +32,7 @@ public class LiveFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_live, container, false);
+        return inflater.inflate(R.layout.tab_fontes_liveworkout, container, false);
     }
 
     @Override
@@ -58,11 +58,11 @@ public class LiveFragment extends Fragment {
     public void onCreate(@Nullable Bundle inBundle) {
         super.onCreate(inBundle);
         if(inBundle == null) {
-            livePicker = new LivePickerFragment();
-            liveExercises = new LiveExerciseFragment();
+            livePicker = new FontesLiveWorkoutPickerFragment();
+            liveExercises = new FontesLiveWorkoutExerciseFragment();
         } else {
-            livePicker = (LivePickerFragment) getChildFragmentManager().getFragment(inBundle, Screen.Picker.name());
-            liveExercises = (LiveExerciseFragment) getChildFragmentManager().getFragment(inBundle, Screen.Exercise.name());
+            livePicker = (FontesLiveWorkoutPickerFragment) getChildFragmentManager().getFragment(inBundle, Screen.Picker.name());
+            liveExercises = (FontesLiveWorkoutExerciseFragment) getChildFragmentManager().getFragment(inBundle, Screen.Exercise.name());
         }
 
         appViewModel = new ViewModelProvider(requireActivity()).get(AppViMo.class);

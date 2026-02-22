@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 import com.easyfitness.R;
 import com.easyfitness.enums.DisplayType;
-import com.easyfitness.fonte.liveworkout.LiveFragment;
+import com.easyfitness.fonte.liveworkout.FontesLiveWorkoutFragment;
 import com.easyfitness.programs.ProgramRunnerFragment;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
@@ -68,7 +68,7 @@ public class FontesPagerFragment extends Fragment {
                     .add(R.string.program, ProgramRunnerFragment.class, guidedWorkoutArgs)
                     .add(R.string.GraphLabel, FonteGraphFragment.class, args)
                     .add(R.string.HistoryLabel, FonteHistoryFragment.class, args)
-                    .add(R.string.LiveLabel, LiveFragment.class)
+                    .add(R.string.LiveLabel, FontesLiveWorkoutFragment.class)
                     .create());
 
             mViewPager.setAdapter(pagerAdapter);

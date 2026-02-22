@@ -18,7 +18,7 @@ import com.easyfitness.R;
 
 import java.util.List;
 
-public class LiveExerciseFragment extends Fragment {
+public class FontesLiveWorkoutExerciseFragment extends Fragment {
     AppViMo appViewModel;
 
     TextView text;
@@ -26,7 +26,7 @@ public class LiveExerciseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_live_exercise, container, false);
+        return inflater.inflate(R.layout.tab_fontes_liveworkout_exercise, container, false);
     }
 
     @Override

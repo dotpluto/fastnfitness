@@ -19,7 +19,7 @@ import com.easyfitness.DAO.program.DAOProgram;
 import com.easyfitness.DAO.program.Program;
 import com.easyfitness.R;
 
-public class LivePickerFragment extends Fragment {
+public class FontesLiveWorkoutPickerFragment extends Fragment {
     AppViMo appViewModel;
     @Nullable Program selectedProgram;
 
@@ -33,7 +33,7 @@ public class LivePickerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        var view = inflater.inflate(R.layout.tab_live_picker, container, false);
+        var view = inflater.inflate(R.layout.tab_fontes_liveworkout_picker, container, false);
 
         Spinner spinner = view.findViewById(R.id.liveWorkoutPickerSpinner);
         var context = getContext();

@@ -18,7 +18,7 @@ public class DatabaseAccess {
         return daoRecord;
     }
 
-    static public DAOProgram getProgramDAO(Context leakyContext) {
+    static public DAOProgram getProgramDAO() {
         if(daoProgram == null) {
             daoProgram = new DAOProgram(MyApplication.getAppContext());
         }

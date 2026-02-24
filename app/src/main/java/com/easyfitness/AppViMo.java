@@ -1,10 +1,5 @@
 package com.easyfitness;
 
-import android.content.Context;
-import android.database.Observable;
-import android.util.Log;
-
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,7 +9,6 @@ import com.easyfitness.DAO.Profile;
 import com.easyfitness.DAO.program.Program;
 import com.easyfitness.DAO.record.Record;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AppViMo extends ViewModel {
@@ -51,7 +45,7 @@ public class AppViMo extends ViewModel {
         programActiveInLiveView.setValue(program);
     }
 
-    public Record getNextExercise() {
+    public Record nextExercise() {
         assert (activeWorkoutData.getValue() != null);
         if(exerciseIndex < activeWorkoutData.getValue().size()) {
             var exercise = activeWorkoutData.getValue().get(exerciseIndex);

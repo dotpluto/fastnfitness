@@ -484,4 +484,6 @@
     <string name="import_unknow_file_extensions">Unknown file extension can\'t import</string>
     <string name="ProgramListLabel">Program List</string>
     <string name="show_labels">show labels</string>
+    <string name="fontes_liveworkout_exercise_nextbuttontext">Next Exercise</string>
+    <string name="fontes_liveworkout_exercise_quitbuttontext">Quit Workout</string>
 </resources>

@@ -1,12 +1,20 @@
 package com.easyfitness.DAO.record;
 
+import androidx.preference.PreferenceManager;
+
+import com.easyfitness.MyApplication;
+import com.easyfitness.SettingsFragment;
 import com.easyfitness.enums.DistanceUnit;
 import com.easyfitness.enums.ExerciseType;
 import com.easyfitness.enums.ProgramRecordStatus;
 import com.easyfitness.enums.RecordType;
 import com.easyfitness.enums.WeightUnit;
+import com.easyfitness.utils.UnitConverter;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.TimeZone;
 
 /* DataBase Object */
 public class Record {
@@ -340,5 +348,44 @@ public class Record {
     }
     public void setTemplateDuration(long duration) {
         mTemplateDuration = duration;
+    }
+
+    public String getTemplateWeightInfoString() {
+        WeightUnit outWeightUnit;
+        {
+            var preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+            var resultString = preferences.getString(SettingsFragment.WEIGHT_UNIT_PARAM, "0");
+            outWeightUnit = WeightUnit.fromInteger(Integer.parseInt(resultString));
+        }
+        assert outWeightUnit != null;
+
+        var outWeight = UnitConverter.weightConverter(mTemplateWeight, WeightUnit.KG, outWeightUnit);
+        return outWeight + " " +  outWeightUnit.toString();
+
+    }
+
+    public String getTemplateRepsInfoString() {
+        return mTemplateReps + " reps";
+    }
+
+    public String getTemplateSecondsDisplayString() {
+        return mTemplateSecond + " seconds";
+    }
+
+    public String getTemplateDistanceDisplayString() {
+        DistanceUnit outDistanceUnit;
+        {
+            var preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+            var resultString = preferences.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0");
+            outDistanceUnit = DistanceUnit.fromInteger(Integer.parseInt(resultString));
+        }
+        assert outDistanceUnit != null;
+
+        var outDistance = UnitConverter.distanceConverter(mTemplateDistance, DistanceUnit.KM, outDistanceUnit);
+        return outDistance + " " +  outDistanceUnit.toString();
+    }
+
+    public String getTemplateDurationDisplayString() {
+        return Instant.ofEpochSecond(mTemplateSecond).atZone(TimeZone.getDefault().toZoneId()).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 }

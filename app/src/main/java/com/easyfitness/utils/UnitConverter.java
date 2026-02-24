@@ -1,5 +1,7 @@
 package com.easyfitness.utils;
 
+import androidx.annotation.NonNull;
+
 import com.easyfitness.enums.DistanceUnit;
 import com.easyfitness.enums.Unit;
 import com.easyfitness.enums.WeightUnit;
@@ -12,11 +14,13 @@ public class UnitConverter {
     /*
      * convert Kg to Lbs
      */
-    static public float weightConverter(float pWeight, WeightUnit pUnitIn, WeightUnit pUnitOut) {
+    static public float weightConverter(float pWeight, @NonNull WeightUnit pUnitIn, @NonNull WeightUnit pUnitOut) {
+        assert pUnitIn.toUnit() != null;
+        assert pUnitOut.toUnit() != null;
         return weightConverter(pWeight, pUnitIn.toUnit(), pUnitOut.toUnit());
     }
 
-    static public float weightConverter(float pWeight, Unit pUnitIn, Unit pUnitOut) {
+    static public float weightConverter(float pWeight, @NonNull Unit pUnitIn, @NonNull Unit pUnitOut) {
         switch (pUnitIn) {
             case KG:
                 switch (pUnitOut) {
@@ -82,7 +86,7 @@ public class UnitConverter {
     }
 
     static public float distanceConverter(float pDistance, DistanceUnit pUnitIn, DistanceUnit pUnitOut) {
-        return weightConverter(pDistance, pUnitIn.toUnit(), pUnitOut.toUnit());
+        return distanceConverter(pDistance, pUnitIn.toUnit(), pUnitOut.toUnit());
     }
 
     static public float distanceConverter(float pDistance, Unit pUnitIn, Unit pUnitOut) {

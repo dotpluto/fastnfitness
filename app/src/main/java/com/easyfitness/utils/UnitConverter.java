@@ -25,28 +25,28 @@ public class UnitConverter {
                     case STONES:
                         return KgtoStones(pWeight);
                     case KG:
-                    default:
                         return pWeight;
                 }
             case LBS:
                 switch (pUnitOut) {
                     case KG:
                         return LbstoKg(pWeight);
+                    case STONES:
+                        return LbstoStones(pWeight);
                     case LBS:
-                    default:
                         return pWeight;
                 }
             case STONES:
                 switch (pUnitOut) {
                     case KG:
                         return StonestoKg(pWeight);
+                    case LBS:
+                        return StonestoLbs(pWeight);
                     case STONES:
-                    default:
                         return pWeight;
                 }
-            default:
-                return pWeight;
         }
+        throw new IllegalStateException("Couldn't convert weight.");
     }
 
     static public float KgtoLbs(float pKg) {
@@ -74,11 +74,11 @@ public class UnitConverter {
     }
 
     static public float KmToMiles(float pKm) {
-        return pKm * 1.609344f;
+        return pKm / 1.609344f;
     }
 
     static public float MilesToKm(float pMiles) {
-        return pMiles / 1.609344f;
+        return pMiles * 1.609344f;
     }
 
     static public float distanceConverter(float pDistance, DistanceUnit pUnitIn, DistanceUnit pUnitOut) {

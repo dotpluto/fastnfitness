@@ -34,7 +34,8 @@
     <!-- Fonte Live Workout Fragment -->
     <string name="fonte_liveworkout_picker_title">Pick a workout</string>
     <string name="fonte_liveworkout_picker_startButtonText">Start</string>
-
+    <string name="fontes_liveworkout_rest_title">Rest</string>
+    <string name="fontes_liveworkout_rest_skipbuttonlabel">Skip</string>
 
     <!-- Share text -->
     <string name="ShareText">Share</string>

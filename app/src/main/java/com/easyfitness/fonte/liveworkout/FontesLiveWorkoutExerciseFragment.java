@@ -41,25 +41,15 @@ public class FontesLiveWorkoutExerciseFragment extends Fragment {
         TextView durationInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_durationinfotext);
 
         //when a workout is started
-        appViewModel.getActiveWorkoutData().observe(getViewLifecycleOwner(), (List<Record> workoutData) -> {
-            var nextExercise = appViewModel.getCurrentExercise();
-            if(nextExercise != null) {
-                showExercise(nextExercise, exerciseNameText, exerciseTypeText, weightInfoText, repInfoText, secondsInfoText, distanceInfoText, durationInfoText);
+        appViewModel.getCurrentExerciseInLiveWorkout().observe(getViewLifecycleOwner(), (Record exercise) -> {
+            if(exercise != null) {
+                showExercise(exercise, exerciseNameText, exerciseTypeText, weightInfoText, repInfoText, secondsInfoText, distanceInfoText, durationInfoText);
             }
         });
 
         var button = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_nextbutton);
         button.setOnClickListener((buttonView) -> {
-            if(appViewModel.getActiveWorkoutData().getValue() != null) {
-                appViewModel.nextExercise();
-                var nextRecord = appViewModel.getCurrentExercise();
-                if(nextRecord != null) {
-                    showExercise(nextRecord, exerciseNameText, exerciseTypeText, weightInfoText, repInfoText, secondsInfoText, distanceInfoText, durationInfoText);
-                } else {
-                    appViewModel.stopProgramInLiveView();
-                }
-
-            }
+            appViewModel.goToNextExercise();
         });
 
         var quitButton = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_quitbutton);

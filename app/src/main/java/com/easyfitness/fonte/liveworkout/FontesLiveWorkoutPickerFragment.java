@@ -44,22 +44,19 @@ public class FontesLiveWorkoutPickerFragment extends Fragment {
 
         ListView listView = view.findViewById(R.id.fonte_liveworkout_picker_listView);
         listView.setAdapter(new WorkoutSelectorAdapter(getActivity(), DatabaseAccess.getProgramDAO().getAll(), (program) -> {}));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(view == lastSelectedView) {
-                    return;
-                }
-
-                view.setBackgroundColor(Color.LTGRAY);
-                selectedProgram = (Program) adapterView.getItemAtPosition(i);
-
-                if(lastSelectedView != null) {
-                    lastSelectedView.setBackgroundColor(Color.WHITE);
-                }
-
-                lastSelectedView = view;
+        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            if(view1 == lastSelectedView) {
+                return;
             }
+
+            view1.setBackgroundColor(Color.LTGRAY);
+            selectedProgram = (Program) adapterView.getItemAtPosition(i);
+
+            if(lastSelectedView != null) {
+                lastSelectedView.setBackgroundColor(Color.WHITE);
+            }
+
+            lastSelectedView = view1;
         });
 
         Button button = view.findViewById(R.id.fonte_liveworkout_picker_startButton);

@@ -23,43 +23,53 @@ public class AppViMo extends ViewModel {
         profile.setValue(pProfile);
     }
 
-    private int exerciseIndex = 0;
-    private final MutableLiveData<List<Record>> activeWorkoutData = new MutableLiveData<>();
-
-    public LiveData<List<Record>> getActiveWorkoutData() {
-        return activeWorkoutData;
-    }
-
+    //The program in the live view and wheter something is running at all.
     private final MutableLiveData<Program> programActiveInLiveView = new MutableLiveData<>();
-
     public LiveData<Program> getProgramActiveInLiveView() {
         return programActiveInLiveView;
+    }
+
+    List<Record> activeWorkoutData = null;
+
+    private int exerciseIndex = 0;
+
+    final MutableLiveData<Record> currentExerciseInLiveWorkout = new MutableLiveData<>(null);
+    public LiveData<Record> getCurrentExerciseInLiveWorkout() {
+        return currentExerciseInLiveWorkout;
     }
 
     public void startProgramInLiveView(Program program) throws IllegalStateException {
         if(programActiveInLiveView.getValue() != null) {
             throw new IllegalStateException("Tried to start program when another was still running.");
         }
-        exerciseIndex = 0;
-        activeWorkoutData.setValue(DatabaseAccess.getRecordDAO().getAllTemplateRecordByProgramArray(program.getId()));
-        programActiveInLiveView.setValue(program);
+        var workoutData = DatabaseAccess.getRecordDAO().getAllTemplateRecordByProgramArray(program.getId());
+        if(!workoutData.isEmpty()) {
+            exerciseIndex = 0;
+            activeWorkoutData = workoutData;
+            programActiveInLiveView.setValue(program);
+            currentExerciseInLiveWorkout.setValue(activeWorkoutData.get(exerciseIndex));
+        }
+
     }
 
-    public void nextExercise() {
-        assert (activeWorkoutData.getValue() != null);
-        if(exerciseIndex < activeWorkoutData.getValue().size()) {
+    public void goToNextExercise() {
+        assert activeWorkoutData != null;
+        if(exerciseIndex + 1 < activeWorkoutData.size()) {
             exerciseIndex += 1;
+            currentExerciseInLiveWorkout.setValue(activeWorkoutData.get(exerciseIndex));
+        } else {
+            stopProgramInLiveView();
         }
+
     }
 
     public Record getCurrentExercise() {
-        var workout = activeWorkoutData.getValue();
-        if(workout == null) {
+        if(activeWorkoutData == null) {
             return null;
         }
 
-        if(exerciseIndex < workout.size()) {
-            return workout.get(exerciseIndex);
+        if(exerciseIndex < activeWorkoutData.size()) {
+            return activeWorkoutData.get(exerciseIndex);
         } else {
             return null;
         }
@@ -67,6 +77,8 @@ public class AppViMo extends ViewModel {
 
     public void stopProgramInLiveView() {
         programActiveInLiveView.setValue(null);
+        activeWorkoutData = null;
+        currentExerciseInLiveWorkout.setValue(null);
     }
 
 }

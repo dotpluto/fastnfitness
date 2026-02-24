@@ -45,12 +45,21 @@ public class AppViMo extends ViewModel {
         programActiveInLiveView.setValue(program);
     }
 
-    public Record nextExercise() {
+    public void nextExercise() {
         assert (activeWorkoutData.getValue() != null);
         if(exerciseIndex < activeWorkoutData.getValue().size()) {
-            var exercise = activeWorkoutData.getValue().get(exerciseIndex);
             exerciseIndex += 1;
-            return exercise;
+        }
+    }
+
+    public Record getCurrentExercise() {
+        var workout = activeWorkoutData.getValue();
+        if(workout == null) {
+            return null;
+        }
+
+        if(exerciseIndex < workout.size()) {
+            return workout.get(exerciseIndex);
         } else {
             return null;
         }

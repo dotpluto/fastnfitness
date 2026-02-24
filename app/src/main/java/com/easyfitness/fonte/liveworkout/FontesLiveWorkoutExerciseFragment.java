@@ -42,7 +42,7 @@ public class FontesLiveWorkoutExerciseFragment extends Fragment {
 
         //when a workout is started
         appViewModel.getActiveWorkoutData().observe(getViewLifecycleOwner(), (List<Record> workoutData) -> {
-            var nextExercise  = appViewModel.nextExercise();
+            var nextExercise = appViewModel.getCurrentExercise();
             if(nextExercise != null) {
                 showExercise(nextExercise, exerciseNameText, exerciseTypeText, weightInfoText, repInfoText, secondsInfoText, distanceInfoText, durationInfoText);
             }
@@ -51,7 +51,8 @@ public class FontesLiveWorkoutExerciseFragment extends Fragment {
         var button = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_nextbutton);
         button.setOnClickListener((buttonView) -> {
             if(appViewModel.getActiveWorkoutData().getValue() != null) {
-                var nextRecord = appViewModel.nextExercise();
+                appViewModel.nextExercise();
+                var nextRecord = appViewModel.getCurrentExercise();
                 if(nextRecord != null) {
                     showExercise(nextRecord, exerciseNameText, exerciseTypeText, weightInfoText, repInfoText, secondsInfoText, distanceInfoText, durationInfoText);
                 } else {

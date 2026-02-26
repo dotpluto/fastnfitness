@@ -59,6 +59,7 @@
         app:layout_constraintVertical_bias="0.956" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -118,4 +119,15 @@
             tools:text="30:00:00"
             tools:visibility="visible" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/fontes_liveworkout_exercise_setinfotext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/fontes_liveworkout_exercise_nextbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:text="5/10 sets" />
 </androidx.constraintlayout.widget.ConstraintLayout>

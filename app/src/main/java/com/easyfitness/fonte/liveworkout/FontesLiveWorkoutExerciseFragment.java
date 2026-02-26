@@ -22,6 +22,16 @@ import com.easyfitness.R;
 public class FontesLiveWorkoutExerciseFragment extends Fragment {
     AppViMo appViewModel;
 
+    TextView exerciseNameText;
+    TextView exerciseTypeText;
+    TextView weightInfoText;
+    TextView repInfoText;
+    TextView secondsInfoText;
+    TextView distanceInfoText;
+    TextView durationInfoText;
+
+    TextView setInfoText;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,63 +40,79 @@ public class FontesLiveWorkoutExerciseFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        TextView exerciseNameText = view.findViewById(R.id.fontes_liveworkout_exercise_exercisenametext);
-        TextView exerciseTypeText = view.findViewById(R.id.fontes_liveworkout_exercise_typeText);
-        TextView weightInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_weightinfotext);
-        TextView repInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_repinfotext);
-        TextView secondsInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_secondsinfotext);
-        TextView distanceInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_distanceinfotext);
-        TextView durationInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_durationinfotext);
+        exerciseNameText = view.findViewById(R.id.fontes_liveworkout_exercise_exercisenametext);
+        exerciseTypeText = view.findViewById(R.id.fontes_liveworkout_exercise_typeText);
+        weightInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_weightinfotext);
+        repInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_repinfotext);
+        secondsInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_secondsinfotext);
+        distanceInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_distanceinfotext);
+        durationInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_durationinfotext);
+        setInfoText = view.findViewById(R.id.fontes_liveworkout_exercise_setinfotext);
 
         //when a workout is started
         appViewModel.getCurrentExerciseInLiveWorkout().observe(getViewLifecycleOwner(), (Record exercise) -> {
             if(exercise != null) {
-                showExercise(exercise, exerciseNameText, exerciseTypeText, weightInfoText, repInfoText, secondsInfoText, distanceInfoText, durationInfoText);
+                showExercise(exercise);
             }
         });
 
         var button = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_nextbutton);
         button.setOnClickListener((buttonView) -> {
-            appViewModel.finishCurrentExercise();
+            appViewModel.doNextSet();
         });
 
         var quitButton = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_quitbutton);
         quitButton.setOnClickListener((buttonView) -> {
             appViewModel.stopProgramInLiveView();
         });
+
+        appViewModel.getCurrentSetInLiveWorkout().observe(getViewLifecycleOwner(), (Integer set) -> {
+            showSetInfo(appViewModel.getCurrentExercise());
+        });
     }
 
-    private void showExercise(Record record, TextView exerciseTitle, TextView exerciseType, TextView weightInfo, TextView repInfo, TextView secondsInfo, TextView distanceInfo, TextView durationInfo) {
-        exerciseTitle.setText(record.getExercise());
-        exerciseType.setText(record.getExerciseType().toString());
+    private void showExercise(Record record) {
+        exerciseNameText.setText(record.getExercise());
+        exerciseTypeText.setText(record.getExerciseType().toString());
         switch(record.getExerciseType()) {
             case STRENGTH -> {
-                weightInfo.setVisibility(VISIBLE);
-                weightInfo.setText(record.getTemplateWeightInfoString());
-                repInfo.setVisibility(VISIBLE);
-                repInfo.setText(record.getTemplateRepsInfoString());
-                secondsInfo.setVisibility(GONE);
-                distanceInfo.setVisibility(GONE);
-                durationInfo.setVisibility(GONE);
+                weightInfoText.setVisibility(VISIBLE);
+                weightInfoText.setText(record.getTemplateWeightInfoString());
+                repInfoText.setVisibility(VISIBLE);
+                repInfoText.setText(record.getTemplateRepsInfoString());
+                secondsInfoText.setVisibility(GONE);
+                distanceInfoText.setVisibility(GONE);
+                durationInfoText.setVisibility(GONE);
             }
             case CARDIO -> {
-                weightInfo.setVisibility(GONE);
-                repInfo.setVisibility(GONE);
-                secondsInfo.setVisibility(GONE);
-                distanceInfo.setVisibility(VISIBLE);
-                distanceInfo.setText(record.getTemplateDistanceDisplayString());
-                durationInfo.setVisibility(VISIBLE);
-                durationInfo.setText(record.getTemplateDurationDisplayString());
+                weightInfoText.setVisibility(GONE);
+                repInfoText.setVisibility(GONE);
+                secondsInfoText.setVisibility(GONE);
+                distanceInfoText.setVisibility(VISIBLE);
+                distanceInfoText.setText(record.getTemplateDistanceDisplayString());
+                durationInfoText.setVisibility(VISIBLE);
+                durationInfoText.setText(record.getTemplateDurationDisplayString());
             }
             case ISOMETRIC -> {
-                weightInfo.setVisibility(VISIBLE);
-                weightInfo.setText(record.getTemplateWeightInfoString());
-                repInfo.setVisibility(GONE);
-                secondsInfo.setVisibility(VISIBLE);
-                secondsInfo.setText(record.getTemplateSecondsDisplayString());
-                distanceInfo.setVisibility(GONE);
-                durationInfo.setVisibility(GONE);
+                weightInfoText.setVisibility(VISIBLE);
+                weightInfoText.setText(record.getTemplateWeightInfoString());
+                repInfoText.setVisibility(GONE);
+                secondsInfoText.setVisibility(VISIBLE);
+                secondsInfoText.setText(record.getTemplateSecondsDisplayString());
+                distanceInfoText.setVisibility(GONE);
+                durationInfoText.setVisibility(GONE);
             }
+        }
+
+        showSetInfo(record);
+    }
+
+    void showSetInfo(Record record) {
+        if(record != null && record.getSets() > 1) {
+            assert appViewModel.getCurrentSetInLiveWorkout().getValue() != null;
+            setInfoText.setText(getString(R.string.fontes_liveworkout_rest_setinfotext, appViewModel.getCurrentSetInLiveWorkout().getValue() + 1, record.getSets()));
+        } else {
+            setInfoText.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -102,5 +128,19 @@ public class FontesLiveWorkoutExerciseFragment extends Fragment {
         super.onDestroy();
 
         appViewModel = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        exerciseNameText = null;
+        exerciseTypeText = null;
+        weightInfoText = null;
+        repInfoText = null;
+        secondsInfoText = null;
+        distanceInfoText = null;
+        durationInfoText = null;
+        setInfoText = null;
     }
 }

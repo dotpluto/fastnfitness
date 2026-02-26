@@ -37,6 +37,7 @@
     <string name="fontes_liveworkout_rest_title">Rest</string>
     <string name="fontes_liveworkout_rest_skipbuttonlabel">Skip</string>
     <string name="fontes_liveworkout_rest_seconds">%d seconds</string>
+    <string name="fontes_liveworkout_rest_setinfotext">%d/%d</string>
 
     <!-- Share text -->
     <string name="ShareText">Share</string>

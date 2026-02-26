@@ -65,12 +65,31 @@ public class AppViMo extends ViewModel {
 
     public void goToNextExercise() {
         liveViewInBreak.setValue(false);
+        currentSetInLiveWorkout.setValue(0);
         if(exerciseIndex + 1 < activeWorkoutData.size()) {
             exerciseIndex += 1;
             currentExerciseInLiveWorkout.setValue(activeWorkoutData.get(exerciseIndex));
         } else {
             stopProgramInLiveView();
         }
+    }
+
+    MutableLiveData<Integer> currentSetInLiveWorkout = new MutableLiveData<>(0);
+
+    public LiveData<Integer> getCurrentSetInLiveWorkout() {
+        return currentSetInLiveWorkout;
+    }
+    public void doNextSet() {
+        var curExercise = getCurrentExerciseInLiveWorkout().getValue();
+        assert curExercise != null;
+        assert currentSetInLiveWorkout.getValue() != null;
+        if(currentSetInLiveWorkout.getValue() < curExercise.getSets() - 1) {
+            Logger.i(currentSetInLiveWorkout.getValue() + "and" + curExercise.getSets());
+            currentSetInLiveWorkout.setValue(currentSetInLiveWorkout.getValue() + 1);
+        } else {
+            goToNextExercise();
+        }
+
     }
 
     public Record getCurrentExercise() {
@@ -89,6 +108,7 @@ public class AppViMo extends ViewModel {
         programActiveInLiveView.setValue(null);
         activeWorkoutData = null;
         currentExerciseInLiveWorkout.setValue(null);
+        currentSetInLiveWorkout.setValue(0);
     }
 
     //break state

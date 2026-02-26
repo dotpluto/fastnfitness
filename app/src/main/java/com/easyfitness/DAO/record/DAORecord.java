@@ -9,6 +9,7 @@ import com.easyfitness.DAO.DAOBase;
 import com.easyfitness.DAO.DAOMachine;
 import com.easyfitness.DAO.Machine;
 import com.easyfitness.DAO.Profile;
+import com.easyfitness.Logger;
 import com.easyfitness.R;
 import com.easyfitness.enums.DistanceUnit;
 import com.easyfitness.enums.ExerciseType;
@@ -308,7 +309,8 @@ public class DAORecord extends DAOBase {
         } else {
             machine_key = cursor.getLong(cursor.getColumnIndex(DAOFonte.EXERCISE_KEY));
         }
-
+        var sets = cursor.getInt(cursor.getColumnIndex(DAORecord.TEMPLATE_SETS));
+        Logger.i("loaded record with " + sets + "sets");
         Record value = new Record(date,
                 cursor.getString(cursor.getColumnIndex(DAORecord.EXERCISE)),
                 machine_key,
@@ -330,7 +332,7 @@ public class DAORecord extends DAOBase {
                 cursor.getInt(cursor.getColumnIndex(DAORecord.TEMPLATE_ORDER)),
                 ProgramRecordStatus.fromInteger(cursor.getInt(cursor.getColumnIndex(DAORecord.TEMPLATE_RECORD_STATUS))),
                 RecordType.fromInteger(cursor.getInt(cursor.getColumnIndex(DAORecord.RECORD_TYPE))),
-                cursor.getInt(cursor.getColumnIndex(DAORecord.TEMPLATE_SETS)),
+                sets,
                 cursor.getInt(cursor.getColumnIndex(DAORecord.TEMPLATE_REPS)),
                 cursor.getFloat(cursor.getColumnIndex(DAORecord.TEMPLATE_WEIGHT)),
                 WeightUnit.fromInteger(cursor.getInt(cursor.getColumnIndex(DAORecord.TEMPLATE_WEIGHT_UNIT))),

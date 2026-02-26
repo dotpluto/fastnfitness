@@ -19,8 +19,6 @@ import com.easyfitness.AppViMo;
 import com.easyfitness.DAO.record.Record;
 import com.easyfitness.R;
 
-import java.util.List;
-
 public class FontesLiveWorkoutExerciseFragment extends Fragment {
     AppViMo appViewModel;
 
@@ -49,7 +47,7 @@ public class FontesLiveWorkoutExerciseFragment extends Fragment {
 
         var button = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_nextbutton);
         button.setOnClickListener((buttonView) -> {
-            appViewModel.goToNextExercise();
+            appViewModel.finishCurrentExercise();
         });
 
         var quitButton = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_quitbutton);

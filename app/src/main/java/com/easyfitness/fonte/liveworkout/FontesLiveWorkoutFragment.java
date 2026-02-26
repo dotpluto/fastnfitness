@@ -23,8 +23,11 @@ public class FontesLiveWorkoutFragment extends Fragment {
     FontesLiveWorkoutPickerFragment livePicker;
     FontesLiveWorkoutExerciseFragment liveExercises;
 
+    FontesLiveWorkoutRestFragment liveRest;
+
     enum Screen {
         Picker,
+        Rest,
         Exercise;
 
     }
@@ -38,10 +41,24 @@ public class FontesLiveWorkoutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         showFragment(livePicker);
-        appViewModel.getProgramActiveInLiveView().observe(getViewLifecycleOwner(), (Program program) -> {
-            if(program != null) {
+
+        //on rest mode
+        appViewModel.getliveViewInBreakData().observe(getViewLifecycleOwner(), (Boolean state) -> {
+            if(state) {
+                showFragment(liveRest);
+            }
+        });
+
+        //new exercise swapped in (come from rest mode)
+        appViewModel.getCurrentExerciseInLiveWorkout().observe(getViewLifecycleOwner(), (exercise) -> {
+            if(exercise != null) {
                 showFragment(liveExercises);
-            } else {
+            }
+        });
+
+        //go to picker view if program ends
+        appViewModel.getProgramActiveInLiveView().observe(getViewLifecycleOwner(), (Program program) -> {
+            if(program == null) {
                 showFragment(livePicker);
             }
         });
@@ -60,9 +77,11 @@ public class FontesLiveWorkoutFragment extends Fragment {
         if(inBundle == null) {
             livePicker = new FontesLiveWorkoutPickerFragment();
             liveExercises = new FontesLiveWorkoutExerciseFragment();
+            liveRest = new FontesLiveWorkoutRestFragment();
         } else {
             livePicker = (FontesLiveWorkoutPickerFragment) getChildFragmentManager().getFragment(inBundle, Screen.Picker.name());
             liveExercises = (FontesLiveWorkoutExerciseFragment) getChildFragmentManager().getFragment(inBundle, Screen.Exercise.name());
+            liveRest = (FontesLiveWorkoutRestFragment) getChildFragmentManager().getFragment(inBundle, Screen.Rest.name());
         }
 
         appViewModel = new ViewModelProvider(requireActivity()).get(AppViMo.class);
@@ -74,8 +93,11 @@ public class FontesLiveWorkoutFragment extends Fragment {
         if(livePicker.isAdded()) {
             getChildFragmentManager().putFragment(outBundle, Screen.Picker.name(), livePicker);
         }
-        if(livePicker.isAdded()) {
+        if(liveExercises.isAdded()) {
             getChildFragmentManager().putFragment(outBundle, Screen.Exercise.name(), liveExercises);
+        }
+        if(liveRest.isAdded()) {
+            getChildFragmentManager().putFragment(outBundle, Screen.Rest.name(), liveRest);
         }
     }
 }

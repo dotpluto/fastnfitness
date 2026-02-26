@@ -71,9 +71,12 @@ public class FontesLiveWorkoutFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outBundle) {
         super.onSaveInstanceState(outBundle);
-
-        getChildFragmentManager().putFragment(outBundle, Screen.Picker.name(), livePicker);
-        getChildFragmentManager().putFragment(outBundle, Screen.Exercise.name(), liveExercises);
+        if(livePicker.isAdded()) {
+            getChildFragmentManager().putFragment(outBundle, Screen.Picker.name(), livePicker);
+        }
+        if(livePicker.isAdded()) {
+            getChildFragmentManager().putFragment(outBundle, Screen.Exercise.name(), liveExercises);
+        }
     }
 }
 

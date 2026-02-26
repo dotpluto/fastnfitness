@@ -7,18 +7,19 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="368dp"
-        android:layout_height="151dp"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="@string/fontes_liveworkout_rest_title"
         android:textAlignment="center"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149" />
+        app:layout_constraintVertical_bias="0.03"
+        app:layout_constraintWidth_percent="0.9" />
 
     <ProgressBar
         android:id="@+id/fontes_liveworkout_rest_progressbar"
@@ -31,10 +32,11 @@
         android:progressDrawable="@drawable/rest_progress_bar"
         app:layout_constraintBottom_toTopOf="@+id/fontes_liveworkout_rest_skipbutton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.532" />
+        app:layout_constraintVertical_bias="0.532"
+        app:layout_constraintWidth_percent="0.5" />
 
     <TextView
         android:id="@+id/fontes_liveworkout_rest_resttimetext"
@@ -60,5 +62,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.912" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

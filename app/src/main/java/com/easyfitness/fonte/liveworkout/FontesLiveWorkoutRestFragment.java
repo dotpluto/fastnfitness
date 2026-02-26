@@ -34,6 +34,13 @@ public class FontesLiveWorkoutRestFragment extends Fragment {
         skipButton.setOnClickListener((buttonView) -> {
             appViewModel.goToNextExercise();
         });
+
+        TextView restTimeText = view.findViewById(R.id.fontes_liveworkout_rest_resttimetext);
+        appViewModel.getCurrentExerciseInLiveWorkout().observe(getViewLifecycleOwner(), (record -> {
+            if(record != null) {
+                restTimeText.setText(getString(R.string.fontes_liveworkout_rest_seconds, appViewModel.getCurrentExercise().getTemplateRestTime()));
+            }
+        }));
     }
 
     @Override

@@ -36,6 +36,7 @@
     <string name="fonte_liveworkout_picker_startButtonText">Start</string>
     <string name="fontes_liveworkout_rest_title">Rest</string>
     <string name="fontes_liveworkout_rest_skipbuttonlabel">Skip</string>
+    <string name="fontes_liveworkout_rest_seconds">%d seconds</string>
 
     <!-- Share text -->
     <string name="ShareText">Share</string>

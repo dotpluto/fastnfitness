@@ -1,13 +1,12 @@
 package com.easyfitness.fonte.liveworkout;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.easyfitness.AppViMo;
-import com.easyfitness.DAO.record.Record;
 import com.easyfitness.R;
 
 public class FontesLiveWorkoutRestFragment extends Fragment {
     AppViMo appViewModel;
+    private CountDownTimer countDownTimer;
+    private ProgressBar progressBar;
+    private TextView restTimeText;
 
     @Nullable
     @Override
@@ -32,15 +33,63 @@ public class FontesLiveWorkoutRestFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button skipButton = view.findViewById(R.id.fontes_liveworkout_rest_skipbutton);
         skipButton.setOnClickListener((buttonView) -> {
+            stopTimer();
             appViewModel.goToNextExercise();
         });
 
-        TextView restTimeText = view.findViewById(R.id.fontes_liveworkout_rest_resttimetext);
+        restTimeText = view.findViewById(R.id.fontes_liveworkout_rest_resttimetext);
+        progressBar = view.findViewById(R.id.fontes_liveworkout_rest_progressbar);
+
         appViewModel.getCurrentExerciseInLiveWorkout().observe(getViewLifecycleOwner(), (record -> {
             if(record != null) {
-                restTimeText.setText(getString(R.string.fontes_liveworkout_rest_seconds, appViewModel.getCurrentExercise().getTemplateRestTime()));
+                startTimer(record.getTemplateRestTime());
             }
         }));
+    }
+
+    private void startTimer(int restTimeSeconds) {
+        stopTimer();
+        if (restTimeSeconds <= 0) {
+            appViewModel.goToNextExercise();
+            return;
+        }
+
+        if (progressBar != null) {
+            progressBar.setMax(restTimeSeconds * 1000);
+            progressBar.setProgress(0);
+        }
+
+        countDownTimer = new CountDownTimer(restTimeSeconds * 1000L, 100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int millisElapsed = (int) (restTimeSeconds * 1000L - millisUntilFinished);
+                int secondsRemaining = (int) (millisUntilFinished / 1000);
+                if (restTimeText != null) {
+                    restTimeText.setText(getString(R.string.fontes_liveworkout_rest_seconds, secondsRemaining));
+                }
+                if (progressBar != null) {
+                    progressBar.setProgress(millisElapsed);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (progressBar != null) {
+                    progressBar.setProgress(restTimeSeconds * 1000);
+                }
+                if (restTimeText != null) {
+                    restTimeText.setText(getString(R.string.fontes_liveworkout_rest_seconds, 0));
+                }
+                appViewModel.goToNextExercise();
+            }
+        }.start();
+    }
+
+    private void stopTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
     }
 
     @Override
@@ -51,9 +100,16 @@ public class FontesLiveWorkoutRestFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopTimer();
+        progressBar = null;
+        restTimeText = null;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-
         appViewModel = null;
     }
 }

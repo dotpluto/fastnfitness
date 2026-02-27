@@ -1,5 +1,6 @@
 package com.easyfitness;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,7 +8,11 @@ import androidx.lifecycle.ViewModel;
 import com.easyfitness.DAO.DatabaseAccess;
 import com.easyfitness.DAO.Profile;
 import com.easyfitness.DAO.program.Program;
+import com.easyfitness.DAO.program.ProgramHistory;
 import com.easyfitness.DAO.record.Record;
+import com.easyfitness.enums.ProgramRecordStatus;
+import com.easyfitness.enums.ProgramStatus;
+import com.easyfitness.utils.DateConverter;
 
 import java.util.List;
 
@@ -42,23 +47,16 @@ public class AppViMo extends ViewModel {
         if(programActiveInLiveView.getValue() != null) {
             throw new IllegalStateException("Tried to start program when another was still running.");
         }
+
         var workoutData = DatabaseAccess.getRecordDAO().getAllTemplateRecordByProgramArray(program.getId());
         if(!workoutData.isEmpty()) {
+            long historyId = DatabaseAccess.getProgramHistoryDAO().add(new ProgramHistory(-1, program.getId(), getProfile().getValue().getId(), ProgramStatus.CLOSED, DateConverter.currentDate(MyApplication.getAppContext()), DateConverter.currentTime(MyApplication.getAppContext()), "", ""));
+            programHistoryActiveInLiveView = DatabaseAccess.getProgramHistoryDAO().get(historyId);
+
             exerciseIndex = 0;
             activeWorkoutData = workoutData;
             programActiveInLiveView.setValue(program);
             currentExerciseInLiveWorkout.setValue(activeWorkoutData.get(exerciseIndex));
-        }
-
-    }
-
-    public void finishCurrentExercise() {
-        assert activeWorkoutData != null;
-        assert currentExerciseInLiveWorkout.getValue() != null;
-        if(currentExerciseInLiveWorkout.getValue().getTemplateRestTime() != 0) {
-            liveViewInBreak.setValue(true);
-        } else {
-            goToNextExercise();
         }
 
     }
@@ -84,12 +82,39 @@ public class AppViMo extends ViewModel {
         assert curExercise != null;
         assert currentSetInLiveWorkout.getValue() != null;
         if(currentSetInLiveWorkout.getValue() < curExercise.getSets() - 1) {
-            Logger.i(currentSetInLiveWorkout.getValue() + "and" + curExercise.getSets());
             currentSetInLiveWorkout.setValue(currentSetInLiveWorkout.getValue() + 1);
         } else {
+            recordExerciseAsCompleted();
             goToNextExercise();
         }
 
+    }
+
+    public void skipExercise() {
+        recordExerciseIfStarted();
+        goToNextExercise();
+    }
+
+    public void quitLiveWorkout() {
+        recordExerciseIfStarted();
+        stopProgramInLiveView();
+    }
+
+    private void recordExerciseIfStarted() {
+        assert currentSetInLiveWorkout.getValue() != null;
+        if(currentSetInLiveWorkout.getValue() > 0) {
+            assert currentExerciseInLiveWorkout.getValue() != null;
+            assert profile.getValue() != null;
+            assert programHistoryActiveInLiveView != null;
+            currentExerciseInLiveWorkout.getValue().instantiateTemplate(profile.getValue(), programHistoryActiveInLiveView.getId(), ProgramRecordStatus.SUCCESS, currentSetInLiveWorkout.getValue(), null, null, null, null, null, null, null, null);
+        }
+    }
+
+    private void recordExerciseAsCompleted() {
+        assert currentExerciseInLiveWorkout.getValue() != null;
+        assert profile.getValue() != null;
+        assert programHistoryActiveInLiveView != null;
+        currentExerciseInLiveWorkout.getValue().instantiateTemplate(profile.getValue(), programHistoryActiveInLiveView.getId(), ProgramRecordStatus.SUCCESS, null, null, null, null, null, null, null, null, null);
     }
 
     public Record getCurrentExercise() {
@@ -109,6 +134,11 @@ public class AppViMo extends ViewModel {
         activeWorkoutData = null;
         currentExerciseInLiveWorkout.setValue(null);
         currentSetInLiveWorkout.setValue(0);
+
+        programHistoryActiveInLiveView.setEndDate(DateConverter.currentDate(MyApplication.getAppContext()));
+        programHistoryActiveInLiveView.setEndTime(DateConverter.currentTime(MyApplication.getAppContext()));
+        DatabaseAccess.getProgramHistoryDAO().update(programHistoryActiveInLiveView);
+        programHistoryActiveInLiveView = null;
     }
 
     //break state
@@ -121,5 +151,8 @@ public class AppViMo extends ViewModel {
     public LiveData<Boolean> getliveViewInBreakData() {
         return liveViewInBreak;
     }
+
+    @Nullable
+    ProgramHistory programHistoryActiveInLiveView = null;
 
 }

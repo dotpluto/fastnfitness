@@ -1,7 +1,10 @@
 package com.easyfitness.DAO.record;
 
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
+import com.easyfitness.DAO.DatabaseAccess;
+import com.easyfitness.DAO.Profile;
 import com.easyfitness.MyApplication;
 import com.easyfitness.SettingsFragment;
 import com.easyfitness.enums.DistanceUnit;
@@ -387,5 +390,40 @@ public class Record {
 
     public String getTemplateDurationDisplayString() {
         return Instant.ofEpochSecond(mTemplateSecond).atZone(TimeZone.getDefault().toZoneId()).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    }
+
+    public void instantiateTemplate(Profile curUserProfile, long programSessionId, ProgramRecordStatus status, @Nullable Integer setAmountOverride, @Nullable Integer repAmountOverride, @Nullable Float weightAmountOverride, @Nullable WeightUnit weightUnitOverride, @Nullable Integer secondsOverride, @Nullable Float distanceOverride, @Nullable DistanceUnit distanceUnitOverride, @Nullable Long durationOverride, @Nullable Integer restTimeOverride) {
+        assert this.mRecordType == RecordType.PROGRAM_TEMPLATE;
+
+        DatabaseAccess.getRecordDAO().addRecord(
+                new Date(), //now
+                mExercise,
+                mExerciseType,
+                setAmountOverride == null ? mSets : setAmountOverride,
+                repAmountOverride == null ? mTemplateReps : repAmountOverride,
+                weightAmountOverride == null ? mTemplateWeight : weightAmountOverride,
+                weightUnitOverride == null ? mTemplateWeightUnit : weightUnitOverride,
+                mNote,
+                distanceOverride == null ? mTemplateDistance : distanceOverride,
+                distanceUnitOverride == null ? mTemplateDistanceUnit : distanceUnitOverride,
+                durationOverride == null ? mTemplateDuration : durationOverride,
+                secondsOverride == null ? mTemplateSecond : secondsOverride,
+                curUserProfile.getId(),
+                RecordType.PROGRAM_RECORD,
+                mId, //give the created record a reference to the template
+                mProgramId,
+                programSessionId,
+                restTimeOverride == null ? mTemplateRestTime : restTimeOverride,
+                status,
+                mSets,
+                mTemplateReps,
+                mTemplateWeight,
+                mTemplateWeightUnit,
+                mTemplateDistance,
+                mTemplateDistanceUnit,
+                mTemplateDuration,
+                mTemplateSecond,
+                mTemplateOrder
+        );
     }
 }

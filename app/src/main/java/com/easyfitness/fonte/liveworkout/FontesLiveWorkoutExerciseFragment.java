@@ -63,11 +63,16 @@ public class FontesLiveWorkoutExerciseFragment extends Fragment {
 
         var quitButton = (Button)view.findViewById(R.id.fontes_liveworkout_exercise_quitbutton);
         quitButton.setOnClickListener((buttonView) -> {
-            appViewModel.stopProgramInLiveView();
+            appViewModel.quitLiveWorkout();
         });
 
         appViewModel.getCurrentSetInLiveWorkout().observe(getViewLifecycleOwner(), (Integer set) -> {
             showSetInfo(appViewModel.getCurrentExercise());
+        });
+
+        Button skipButton = view.findViewById(R.id.fontes_liveworkout_exercise_skipbutton);
+        skipButton.setOnClickListener((buttonView) -> {
+            appViewModel.skipExercise();
         });
     }
 

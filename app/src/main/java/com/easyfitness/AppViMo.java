@@ -85,14 +85,14 @@ public class AppViMo extends ViewModel {
             currentSetInLiveWorkout.setValue(currentSetInLiveWorkout.getValue() + 1);
         } else {
             recordExerciseAsCompleted();
-            goToNextExercise();
+            liveViewInBreak.setValue(true);
         }
 
     }
 
     public void skipExercise() {
         recordExerciseIfStarted();
-        goToNextExercise();
+        liveViewInBreak.setValue(true);
     }
 
     public void quitLiveWorkout() {
